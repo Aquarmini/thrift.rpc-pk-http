@@ -21,6 +21,10 @@ interface AppIf {
    * @return string
    */
   public function version();
+  /**
+   * @return string
+   */
+  public function db();
 }
 
 

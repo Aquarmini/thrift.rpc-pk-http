@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/api/version', 'ApiController@version');
+
+Route::get('/api/db', 'ApiController@db');

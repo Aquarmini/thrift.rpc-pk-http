@@ -62,4 +62,23 @@ class AppProcessor {
       $output->getTransport()->flush();
     }
   }
+  protected function process_db($seqid, $input, $output) {
+    $args = new \Xin\Thrift\MicroService\App_db_args();
+    $args->read($input);
+    $input->readMessageEnd();
+    $result = new \Xin\Thrift\MicroService\App_db_result();
+    $result->success = $this->handler_->db();
+    $bin_accel = ($output instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($output, 'db', TMessageType::REPLY, $result, $seqid, $output->isStrictWrite());
+    }
+    else
+    {
+      $output->writeMessageBegin('db', TMessageType::REPLY, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+  }
 }
